@@ -54,7 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accelerometer.cs" />
+    <Compile Include="Gyrometer.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Mapping.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

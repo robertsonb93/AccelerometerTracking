@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:minWidth="25px"
     android:minHeight="25px">
     <TextView
@@ -12,15 +13,72 @@
         android:layout_height="wrap_content"
         android:id="@+id/X_text" />
     <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/xVel" />
+    <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/xDist" />
+    <CheckBox
+        android:text="Zero X's Gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ZeroXGravity" />
+    <TextView
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Y_text" />
     <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yVel" />
+    <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yDist" />
+    <CheckBox
+        android:text="Zero Y's Gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ZeroYGravity" />
+    <TextView
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Z_text" />
+    <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zVel" />
+    <TextView
+        android:text="Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zDist" />
+    <CheckBox
+        android:text="Zero Z's Gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ZeroZGravity" />
+    <TextView
+        android:text="FuyckOFF"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Vel_text" />
+    <TextView
+        android:text="dbg"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dbg" />
 </LinearLayout>
