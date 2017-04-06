@@ -47,7 +47,7 @@ namespace AccelerometerTracking
         protected override void OnResume()
         {
             base.OnResume();
-            SM.RegisterListener(this, SM.GetDefaultSensor(SensorType.Accelerometer), SensorDelay.Ui);
+            SM.RegisterListener(this, SM.GetDefaultSensor(SensorType.LinearAcceleration), SensorDelay.Ui);
         }
 
         public void OnAccuracyChanged(Sensor sens, SensorStatus st)
@@ -56,26 +56,15 @@ namespace AccelerometerTracking
 
         public void OnSensorChanged(SensorEvent e)
         {
-            dbgTxt.Text = "Use Me to Debug if needed";
+            
                 
             accelor.OnSensorChanged(e);
            float[] XYZ = accelor.getAccelXYZ();
-
-            if(!settled)
-            foreach (float acc in XYZ)
-            {
-                    settled = false;
-                if (acc > 0.01f || acc < -0.01f)
-                    break;
-              settled = true;
-            }
-
-            if (settled)
-            {
-                for(int i=0;i<3;i++)
+         
+                dbgTxt.Text = string.Format("x = {0:f} y = {1:f} z = {2:f} ", XYZ[0], XYZ[1], XYZ[2]);
+                for (int i=0;i<3;i++)
                      XYZ[i] = (float)Math.Round(XYZ[i], 2);
                 map.UpDateVelocity(XYZ);
-            }
 
         }
     }

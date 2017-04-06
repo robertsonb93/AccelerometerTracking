@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/xDist" />
     <CheckBox
-        android:text="Zero X's Gravity"
+        android:text="X's Gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ZeroXGravity" />
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/yDist" />
     <CheckBox
-        android:text="Zero Y's Gravity"
+        android:text="Y's Gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ZeroYGravity" />
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/zDist" />
     <CheckBox
-        android:text="Zero Z's Gravity"
+        android:text=" Z's Gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ZeroZGravity" />
