@@ -56,7 +56,7 @@ namespace AccelerometerTracking
                 //t = a time constant
                 // the change in time between updates on events
 
-                float alpha = 0.05f;
+                float alpha = 0.025f;
             for (int i = 0; i < gravity.Length; i++)
             {
                 if (gravCheck[i].Checked == false)

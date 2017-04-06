@@ -33,13 +33,12 @@ namespace AccelerometerTracking
         private Activity activity;
         private TextView VelText, xVel, yVel, zVel,xDist,yDist,zDist;
         private Matrix<double> state;
+        private Matrix<double> stateOld;
         private Matrix<double> stateCov;
-        private InformationFilter KFilter;
-        Matrix<double> ZMat = Matrix<double>.Build.Dense(1,3);
-        Matrix<double> RMat = Matrix<double>.Build.DenseIdentity(3, 3);
-        private float[] oldAccel;
-        
-        private int numRSamples = 0;
+        private DiscreteKalmanFilter KFilter;
+        Matrix<double> ZMat = Matrix<double>.Build.Dense(1,3);       
+        private List<List<float>> accelHist = new List<List<float>>();
+
 
        public Mapping(Context cntxt)
         {
@@ -48,12 +47,14 @@ namespace AccelerometerTracking
             velocity = 0;
             velocityXYZ = new float[]{ 0,0,0};
             positionXYZ = new float[] { 0, 0, 0 };
-            oldAccel = new float[] { 0, 0, 0 };
+            for (int i = 0; i < 3; i++)
+                accelHist.Add(new List<float>() );//Add a XYZ history
+
             sw = new Stopwatch();
 
-            state = getStateMat(velocityXYZ);
+           stateOld = state = getStateMat(velocityXYZ);
             stateCov = getStateCov();
-            KFilter = new InformationFilter(state, stateCov);
+            KFilter = new DiscreteKalmanFilter(state, stateCov);
         }
 
         public Matrix<double> getStateMat(float[] accelertation)
@@ -70,7 +71,18 @@ namespace AccelerometerTracking
         public Matrix<double> getStateCov()
         {
             Matrix<double> stCv = (Matrix<double>.Build.DenseIdentity(9,9));
-            stCv *= 0.8;
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9;j++)
+                {
+                        Vector<double> sample1 = state.Row(i);
+                        Vector<double> sample2 = state.Row(j);
+                        double val = Statistics.Covariance(sample1,sample2);
+                        if(!Double.IsNaN(val) && !Double.IsInfinity(val) && i != j && val > 0.01)
+                        stCv[i, j] = val;
+                }
+            }
+            stateOld = state;
             return stCv;
         }
 
@@ -86,24 +98,28 @@ namespace AccelerometerTracking
 
             return stateUpdate;
         }
+
+        //R is supposed to be covaraince matrix between the different measurements(sensor inputs) for the system
+        //However I dare you to set any values aside from [i,i] to non zero.. NaN Everywher!
         public Matrix<double> getR(float[] accel)
         {
-            if (numRSamples++ < 500 && numRSamples > 50 && false) //If we try and compute a covariance matrix, this will cause all the Kalman to filll with NaN.
-            {
+            Matrix<double> RMat = Matrix<double>.Build.DenseIdentity(3, 3);
+            for (int i = 0; i < 3; i++)
+                accelHist[i].Add(accel[i]);
+              
                 for (int i = 0; i < 3; i++)
                 {
-                    double[] sampleX = { oldAccel[0], accel[i] };
-                    double[] sampleY = { oldAccel[1], accel[i] };
-                    double[] sampleZ = { oldAccel[2], accel[i] };
-                    RMat[0,i] = Statistics.Variance(sampleX);
-                    RMat[1, i] = Statistics.Variance(sampleY);
-                    RMat[2, i] = Statistics.Variance(sampleZ);                 
+                    //for (int j = 0; j < 3; j++)
+                    {
+                    int j = i;
+                    double val = Statistics.Covariance(accelHist[i].ToArray(),accelHist[j].ToArray());
+                    if (!Double.IsNaN(val) && !Double.IsInfinity(val) && val > 0.01)
+                        RMat[i, j] = val;
+                    else
+                        RMat[i, j] = 1;
+                    }
                 }
-                for (int i = 0; i < 3; i++)
-                    oldAccel[i] = accel[i];
-            }
-
-            return RMat*0.05;
+            return RMat;
         }
 
         public Matrix<double> getH(float time)
@@ -153,7 +169,7 @@ namespace AccelerometerTracking
             float interval = sw.ElapsedMilliseconds / 100.00f;
 
             KFilter.Update(getZ(acceleration), getH(interval), getR(acceleration));
-            KFilter.Predict(getStateUpdateMat(interval, acceleration));
+            KFilter.Predict(getStateUpdateMat(interval, acceleration),getStateCov());
 
             state = KFilter.State;
             updateState();

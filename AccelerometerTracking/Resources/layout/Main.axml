@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/ZeroZGravity" />
     <TextView
-        android:text="FuyckOFF"
+        android:text="Display Kalman State here"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
